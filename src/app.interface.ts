@@ -22,7 +22,9 @@ export interface Order {
   paid: boolean;
   total: number;
   menu: Menu[];
-  date: Date;
+  date?: Date;
+  payment: string;
+
 }
 
 // Interface - request for history page (search: payment choice)
@@ -34,8 +36,8 @@ export interface Request {
 
 // Interface that concern the user (Authentification)
 export interface User {
+  userId?: string;
   name: string;
   username: string;
   password: string;
-  confirmpassword?: string;
 }
