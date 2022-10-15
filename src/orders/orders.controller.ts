@@ -1,4 +1,5 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
+import { OrderDto } from 'src/app.dto';
 import { Food, Section, Order } from 'src/app.interface';
 import { OrdersService } from './orders.service';
 
@@ -16,4 +17,13 @@ export class OrdersController {
     return this.ordersService.recoverOneOrder(orderId);
   }
 
+  @Post('create')
+  createOrder(@Body() dto: OrderDto): Order {
+    return this.ordersService.createOrder(dto);
+  }
+
+  @Patch(':id/edit')
+  updateOrder(@Body() dto: OrderDto): Order {
+    return this.ordersService.updateOrder(dto);
+  }
 }
