@@ -24,7 +24,12 @@ export interface Order {
   menu: Menu[];
   date?: Date;
   payment: string;
+}
 
+// Interface for the section
+export interface Section {
+  name: string;
+  extra: string[];
 }
 
 // Interface - request for history page (search: payment choice)
