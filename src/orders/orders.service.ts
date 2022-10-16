@@ -10,6 +10,7 @@ import { Order } from 'src/app.interface';
 export class OrdersService {
   // @Get("/orders/create")
   recoverFoodAndSection() {
+    // console.log("get the root")
     return {
       foods: foundFoods,
       section: allSection,
@@ -25,32 +26,11 @@ export class OrdersService {
   //@ Post('orders/create')
   createOrder(dto) {
     // Recover the data and add in DB, if error connection, throw error, otherwise return the orders with id and redirect in FE
-    return {
-      _id: '',
-      table: dto.table,
-      paid: dto.paid,
-      total: dto.total,
-      menu: dto.menu,
-      payment: dto.payment,
-    };
+    return { test: dto };
   }
 
-  // @Patch("/orders/:id/edit")
-  updateOrder(dto) {
-    // const order = await this.orderModel.findByIdAndUpdate(dto._id, dto)
-    // const updatedOrder = {...order}
-    const state = {
-      payment: '',
-      table: 5,
-      paid: false,
-      _id: '3',
-      menu: [],
-      total: 5,
-    };
-    // findByIdAndUpdate system, throw error if not found, return boolean or something to confirm the change
-    return {
-      ...state,
-      dto,
-    };
+  // @Patch('/orders/:id/edit')
+  updateOrder() {
+    // code here
   }
 }

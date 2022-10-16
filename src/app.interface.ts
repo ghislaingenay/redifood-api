@@ -17,7 +17,7 @@ export interface Menu {
 
 // Type for one order
 export interface Order {
-  _id: string;
+  _id?: string;
   table: number;
   paid: boolean;
   total: number;
