@@ -17,6 +17,15 @@ export class OrdersController {
     return this.ordersService.recoverOneOrder(orderId);
   }
 
+  @Get(':id/edit')
+  editOneOrder(@Param('id') orderId: string): {
+    editOrder: Order;
+    allfoods: Food[];
+    allsection: Section[];
+  } {
+    return this.ordersService.editOneOrder(orderId);
+  }
+
   @Post()
   createOrder(
     @Body('paid') orderPaid: boolean,
