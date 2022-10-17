@@ -1,5 +1,4 @@
-import { Body, Controller, Get, Param, Post, Patch, Req } from '@nestjs/common';
-import { OrderDto } from 'src/app.dto';
+import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
 import { Food, Section, Order, Menu } from 'src/app.interface';
 import { OrdersService } from './orders.service';
 
@@ -12,6 +11,7 @@ export class OrdersController {
     return this.ordersService.recoverFoodAndSection();
   }
 
+  // Test id: AVGVHB5373DHUDFBHSCC
   @Get(':id')
   recoverOneOrder(@Param('id') orderId: string): Order {
     return this.ordersService.recoverOneOrder(orderId);
@@ -38,7 +38,22 @@ export class OrdersController {
   }
 
   @Patch(':id/edit')
-  updateOrder(): void {
-    return this.ordersService.updateOrder();
+  updateOrder(
+    @Body('paid') orderPaid: boolean,
+    @Body('total') orderTotal: number,
+    @Body('table') orderTable: number,
+    @Body('menu') orderMenu: Menu[],
+    @Body('payment') orderPayment: string,
+    @Body('date') orderDate: Date,
+  ): void {
+    const dto = {
+      paid: orderPaid,
+      total: orderTotal,
+      table: orderTable,
+      menu: orderMenu,
+      payment: orderPayment,
+      date: orderDate,
+    };
+    return this.ordersService.updateOrder(dto);
   }
 }

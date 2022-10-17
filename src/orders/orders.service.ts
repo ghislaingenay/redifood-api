@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   foods as foundFoods,
   ordersData,
@@ -18,19 +18,23 @@ export class OrdersService {
   }
 
   // @Get("/orders/:id")
-  recoverOneOrder(id: string): Order {
-    console.log(id);
-    return ordersData[0];
+  recoverOneOrder(orderId: string) {
+    console.log('recover-id', orderId);
+    const findOrder = ordersData.find((element) => element._id === orderId);
+    if (!findOrder) {
+      throw new NotFoundException('no order were found with this specific id')
+    }
+    return findOrder;
   }
 
   //@ Post('orders/create')
-  createOrder(dto) {
+  createOrder(dto: Order) {
     // Recover the data and add in DB, if error connection, throw error, otherwise return the orders with id and redirect in FE
     return { test: dto };
   }
 
   // @Patch('/orders/:id/edit')
-  updateOrder() {
-    // code here
+  updateOrder(dto) {
+    console.log(dto);
   }
 }
