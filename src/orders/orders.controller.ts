@@ -18,12 +18,12 @@ export class OrdersController {
   }
 
   @Get(':id/edit')
-  editOneOrder(@Param('id') orderId: string): {
+  getOneOrder(@Param('id') orderId: string): {
     editOrder: Order;
     allfoods: Food[];
     allsection: Section[];
   } {
-    return this.ordersService.editOneOrder(orderId);
+    return this.ordersService.getOneOrder(orderId);
   }
 
   @Post()
@@ -48,6 +48,7 @@ export class OrdersController {
 
   @Patch(':id/edit')
   updateOrder(
+    @Param('id') orderId: string,
     @Body('paid') orderPaid: boolean,
     @Body('total') orderTotal: number,
     @Body('table') orderTable: number,
@@ -63,6 +64,6 @@ export class OrdersController {
       payment: orderPayment,
       date: orderDate,
     };
-    return this.ordersService.updateOrder(dto);
+    return this.ordersService.updateOrder(dto, orderId);
   }
 }

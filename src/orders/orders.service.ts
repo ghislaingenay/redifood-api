@@ -17,7 +17,7 @@ export class OrdersService {
     };
   }
 
-  editOneOrder(orderId: string) {
+  getOneOrder(orderId: string) {
     const foodsAndSection = this.recoverFoodAndSection();
     console.log('orderId', orderId);
     return {
@@ -78,7 +78,8 @@ export class OrdersService {
   }
 
   // @Patch('/orders/:id/edit')
-  updateOrder(dto) {
-    console.log(dto);
+  updateOrder(dto, orderId) {
+    console.log('show id', orderId);
+    console.log('show dto', dto);
   }
 }
