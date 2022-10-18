@@ -2,10 +2,12 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class HistoryService {
-
   // @Get('history')
-  getPaidOrders(paymentChoice, ordersDateFrom, ordersDateTo) {
-    console.log('val', paymentChoice, ordersDateFrom, ordersDateTo);
+  getPaidOrders() {
+    console.log('kk');
+    return {
+      val: 'kk',
+    };
     // findAllOrders and filter them by paid === true
     // And then filter them
     // if (paymentChoice !== '') {
