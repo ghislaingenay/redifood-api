@@ -2,8 +2,8 @@ import { Controller, Get } from '@nestjs/common';
 import { FoodsService } from './foods.service';
 import { Food, Section } from 'src/app.interface';
 
-@Controller('food')
-export class FoodController {
+@Controller('foods')
+export class FoodsController {
   constructor(private readonly foodsService: FoodsService) {}
 
   @Get()
