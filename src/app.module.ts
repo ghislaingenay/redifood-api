@@ -7,9 +7,16 @@ import { ProfileModule } from './profile/profile.module';
 import { FoodsModule } from './foods/foods.module';
 import { FoodsController } from './foods/foods.controller';
 import { FoodsService } from './foods/foods.service';
+import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
-  imports: [OrdersModule, HistoryModule, ProfileModule, FoodsModule],
+  imports: [
+    OrdersModule,
+    HistoryModule,
+    ProfileModule,
+    FoodsModule,
+    MongooseModule.forRoot(process.env.MONGODB_URL),
+  ],
   controllers: [AppController, FoodsController],
   providers: [AppService, FoodsService],
 })
