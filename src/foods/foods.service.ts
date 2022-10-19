@@ -56,6 +56,7 @@ export class FoodsService {
 
   // @Post('create')
   createFood(dto: Food) {
+    console.log(dto)
     console.log('create a food was done');
     return dto;
   }
