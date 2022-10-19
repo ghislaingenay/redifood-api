@@ -30,7 +30,7 @@ export class FoodsService {
   deleteExtra(removeExtra: string) {
     // Recover the extra and update foods DB and return boolean as well to confirm modifications
     console.log('an extra was removed');
-    console.log('deletesection', removeExtra);
+    console.log('deleteextra', removeExtra.toLowerCase());
     return {
       foods: foundFoods,
       section: allSection,
@@ -50,6 +50,7 @@ export class FoodsService {
   // @Patch('')
   updateFood(dto: Food) {
     console.log('patch was done');
+    console.log(dto);
     return dto;
   }
 

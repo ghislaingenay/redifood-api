@@ -11,13 +11,13 @@ export class FoodsController {
     return this.foodsService.recoverFoodAndSection();
   }
 
-  @Delete('delete/section')
+  @Delete('section')
   deleteSection(@Body('deleteSection') removeSection: string): FoodAndSection {
     return this.foodsService.deleteSection(removeSection);
   }
 
   // Delete one section from the FE and update DB of foods as well
-  @Delete('delete/extra')
+  @Delete('extra')
   deleteExtra(@Body('deleteExtra') removeExtra: string): FoodAndSection {
     return this.foodsService.deleteExtra(removeExtra);
   }
