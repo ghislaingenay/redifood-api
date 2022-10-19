@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
-import { Food, Section, Order, Menu } from 'src/app.interface';
+import { Food, Section, Order, Menu, FoodAndSection } from 'src/app.interface';
 import { OrdersService } from './orders.service';
 
 @Controller('orders')
@@ -7,7 +7,7 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Get('create')
-  recoverFoodAndSection(): { foods: Food[]; section: Section[] } {
+  recoverFoodAndSection(): FoodAndSection {
     return this.ordersService.recoverFoodAndSection();
   }
 
