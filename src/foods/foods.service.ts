@@ -52,4 +52,10 @@ export class FoodsService {
     console.log('patch was done');
     return dto;
   }
+
+  // @Post('create')
+  createFood(dto: Food) {
+    console.log('create a food was done');
+    return dto;
+  }
 }

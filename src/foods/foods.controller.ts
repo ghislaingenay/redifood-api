@@ -1,6 +1,6 @@
-import { Controller, Body, Get, Delete, Patch, Param } from '@nestjs/common';
+import { Controller, Body, Get, Delete, Patch, Param, Post } from '@nestjs/common';
 import { FoodsService } from './foods.service';
-import { Food, FoodAndSection, Section } from 'src/app.interface';
+import { Food, FoodAndSection } from 'src/app.interface';
 
 @Controller('foods')
 export class FoodsController {
@@ -38,7 +38,7 @@ export class FoodsController {
     @Body('section') foodSection: string,
     @Body('extra') foodExtra: string,
   ): Food {
-    let dto = {
+    const dto = {
       _id: foodId,
       name: foodName,
       photo: foodPhoto,
@@ -46,6 +46,29 @@ export class FoodsController {
       price: foodPrice,
       section: foodSection,
       extra: foodExtra,
-    }
+    };
     return this.foodsService.updateFood(dto);
+  }
+
+  @Post('create')
+  createFood(
+    @Body('_id') foodId: string,
+    @Body('name') foodName: string,
+    @Body('photo') foodPhoto: string,
+    @Body('description') foodDescription: string,
+    @Body('price') foodPrice: number,
+    @Body('section') foodSection: string,
+    @Body('extra') foodExtra: string,
+  ): Food {
+    const dto = {
+      _id: foodId,
+      name: foodName,
+      photo: foodPhoto,
+      description: foodDescription,
+      price: foodPrice,
+      section: foodSection,
+      extra: foodExtra,
+    };
+    return this.foodsService.createFood(dto);
+  }
 }
