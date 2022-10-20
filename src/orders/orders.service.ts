@@ -5,9 +5,16 @@ import {
   section as allSection,
 } from '../data';
 import { Order } from 'src/app.interface';
+import { InjectModel } from '@nestjs/mongoose';
+import { ORDER_MODEL } from 'constant';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class OrdersService {
+  constructor(
+    @InjectModel(ORDER_MODEL) private readonly orderModel: Model<Order>,
+  ) {}
+
   // @Get("/orders/create")
   recoverFoodAndSection() {
     // console.log("get the root")

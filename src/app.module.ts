@@ -5,12 +5,20 @@ import { OrdersModule } from './orders/orders.module';
 import { HistoryModule } from './history/history.module';
 import { ProfileModule } from './profile/profile.module';
 import { FoodsModule } from './foods/foods.module';
-import { FoodsController } from './foods/foods.controller';
-import { FoodsService } from './foods/foods.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
+
 
 @Module({
-  imports: [OrdersModule, HistoryModule, ProfileModule, FoodsModule],
-  controllers: [AppController, FoodsController],
-  providers: [AppService, FoodsService],
+  imports: [
+    OrdersModule,
+    HistoryModule,
+    ProfileModule,
+    FoodsModule,
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGODB_URL),
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
