@@ -1,4 +1,12 @@
-import { Controller, Body, Get, Delete, Patch, Param, Post } from '@nestjs/common';
+import {
+  Controller,
+  Body,
+  Get,
+  Delete,
+  Patch,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { FoodsService } from './foods.service';
 import { Food, FoodAndSection } from 'src/app.interface';
 
@@ -7,8 +15,8 @@ export class FoodsController {
   constructor(private readonly foodsService: FoodsService) {}
 
   @Get()
-  recoverFoodAndSection(): FoodAndSection {
-    return this.foodsService.recoverFoodAndSection();
+  async recoverFoodAndSection(): Promise<FoodAndSection> {
+    return await this.foodsService.recoverFoodAndSection();
   }
 
   @Delete('section')
@@ -51,17 +59,15 @@ export class FoodsController {
   }
 
   @Post('create')
-  createFood(
-    @Body('_id') foodId: string,
+  async createFood(
     @Body('name') foodName: string,
     @Body('photo') foodPhoto: string,
     @Body('description') foodDescription: string,
     @Body('price') foodPrice: number,
     @Body('section') foodSection: string,
     @Body('extra') foodExtra: string,
-  ): Food {
+  ): Promise<Food> {
     const dto = {
-      _id: foodId,
       name: foodName,
       photo: foodPhoto,
       description: foodDescription,
@@ -69,6 +75,6 @@ export class FoodsController {
       section: foodSection,
       extra: foodExtra,
     };
-    return this.foodsService.createFood(dto);
+    return await this.foodsService.createFood(dto);
   }
 }

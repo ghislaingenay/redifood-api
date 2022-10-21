@@ -4,6 +4,7 @@ import { Food, Section } from 'src/app.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { FOOD_MODEL, SECTION_MODEL } from 'constant';
 import { Model } from 'mongoose';
+import { convertSection } from 'functions';
 
 @Injectable()
 export class FoodsService {
@@ -13,12 +14,17 @@ export class FoodsService {
   ) {}
   // Recover foods and section to render in the page
   // @Get('foods')
-  recoverFoodAndSection() {
+  async recoverFoodAndSection() {
+    const allFoods = await this.foodModel.find().exec();
+    const completeSection = await this.sectionModel.find().exec();
     console.log('recover all data');
+    // console.log('sections', completeSection)
+    const sectionDisplay = convertSection(completeSection)
+    console.log('changeDisplay', sectionDisplay);
     // Find everything in DB and return it
     return {
-      foods: foundFoods,
-      section: allSection,
+      foods: allFoods,
+      section: sectionDisplay,
     };
   }
 
@@ -62,9 +68,19 @@ export class FoodsService {
   }
 
   // @Post('create')
-  createFood(dto: Food) {
-    console.log(dto)
-    console.log('create a food was done');
-    return dto;
+  async createFood(dto: Food) {
+    console.log('entered in the loop');
+    const newFood = await this.foodModel.create(dto);
+    const checkSection = await this.sectionModel.find({ name: dto.section, extra: dto.extra }).exec();
+    console.log('checkSection', checkSection);
+    if (checkSection.length === 0) {
+      const createNewSection = await this.sectionModel.create({
+        name: dto.section,
+        extra: dto.extra,
+      });
+      console.log('section created', createNewSection);
+    }
+    console.log('create a food was done', newFood);
+    return newFood;
   }
 }
