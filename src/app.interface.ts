@@ -32,6 +32,12 @@ export interface Section {
   extra: string[];
 }
 
+// Interface for the section
+export interface SectionDB {
+  name: string;
+  extra: string;
+}
+
 // Interface - request for history page (search: payment choice)
 export interface Request {
   search: string;
