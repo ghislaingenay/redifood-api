@@ -4,67 +4,51 @@ import {
   ordersData,
   section as allSection,
 } from '../data';
-import { Order } from 'src/app.interface';
+import { Order, Food, SectionDB } from 'src/app.interface';
 import { InjectModel } from '@nestjs/mongoose';
-import { ORDER_MODEL } from 'constant';
+import { FOOD_MODEL, ORDER_MODEL, SECTION_MODEL } from 'constant';
 import { Model } from 'mongoose';
+import { convertSection } from 'functions';
 
 @Injectable()
 export class OrdersService {
   constructor(
     @InjectModel(ORDER_MODEL) private readonly orderModel: Model<Order>,
+    @InjectModel(FOOD_MODEL) private readonly foodModel: Model<Food>,
+    @InjectModel(SECTION_MODEL) private readonly sectionModel: Model<SectionDB>,
   ) {}
 
   // @Get("/orders/create")
-  recoverFoodAndSection() {
+  async recoverFoodAndSection() {
     // console.log("get the root")
+    const allFoods = await this.foodModel.find().exec();
+    console.log('allfoods', allFoods);
+    const completeSection = await this.sectionModel.find().exec();
+    console.log('sectiondata', completeSection);
+    console.log('recover all data');
+    // console.log('sections', completeSection)
+    const sectionDisplay = convertSection(completeSection);
+    console.log('changeDisplay', sectionDisplay);
+    const allOrders = await this.orderModel.find().exec();
+    // Find everything in DB and return it
     return {
-      foods: foundFoods,
-      section: allSection,
+      foods: allFoods,
+      section: sectionDisplay,
+      orders: allOrders,
     };
   }
 
-  getOneOrder(orderId: string) {
-    const foodsAndSection = this.recoverFoodAndSection();
-    console.log('orderId', orderId);
+  // @Get(':id/edit')
+  async getOneOrder(orderId: string) {
+    const allFoods = await this.foodModel.find().exec();
+    console.log('allfoods', allFoods);
+    const completeSection = await this.sectionModel.find().exec();
+    const sectionDisplay = convertSection(completeSection);
+    const oneOrder = await this.orderModel.findById(orderId);
     return {
-      editOrder: {
-        _id: '01frVGVH4514DC',
-        paid: false,
-        table: 7,
-        total: 23.2,
-        payment: '',
-        menu: [
-          {
-            food: {
-              _id: '8',
-              name: 'Sprite can - 500 mL',
-              photo:
-                'https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-              price: 1.6,
-              description: 'Sprite can of 500 mL',
-              section: 'drink',
-              extra: 'soda',
-            },
-            qty: 2,
-          },
-          {
-            food: {
-              _id: '1',
-              name: 'Pizza Mediterranean',
-              photo:
-                'https://images.unsplash.com/photo-1528137871618-79d2761e3fd5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-              price: 12.5,
-              description: 'Soo good',
-              section: 'pizza',
-              extra: 'tomato',
-            },
-            qty: 1,
-          },
-        ],
-      },
-      allfoods: foodsAndSection.foods,
-      allsection: foodsAndSection.section,
+      foods: allFoods,
+      section: sectionDisplay,
+      orders: oneOrder,
     };
   }
 
@@ -73,13 +57,14 @@ export class OrdersService {
     console.log('recover-id', orderId);
     const findOrder = ordersData.find((element) => element._id === orderId);
     if (!findOrder) {
-      throw new NotFoundException('no order were found with this specific id')
+      throw new NotFoundException('no order were found with this specific id');
     }
     return findOrder;
   }
 
   //@ Post('orders/create')
   createOrder(dto: Order) {
+    console.log(dto);
     // Recover the data and add in DB, if error connection, throw error, otherwise return the orders with id and redirect in FE
     return { test: dto };
   }
