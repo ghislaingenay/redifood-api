@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { foods as foundFoods, section as allSection } from '../data';
-import { Food, Section } from 'src/app.interface';
+import { Food, SectionDB } from 'src/app.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { FOOD_MODEL, SECTION_MODEL } from 'constant';
 import { Model } from 'mongoose';
@@ -10,16 +10,17 @@ import { convertSection } from 'functions';
 export class FoodsService {
   constructor(
     @InjectModel(FOOD_MODEL) private readonly foodModel: Model<Food>,
-    @InjectModel(SECTION_MODEL) private readonly sectionModel: Model<Section>,
+    @InjectModel(SECTION_MODEL) private readonly sectionModel: Model<SectionDB>,
   ) {}
   // Recover foods and section to render in the page
   // @Get('foods')
   async recoverFoodAndSection() {
     const allFoods = await this.foodModel.find().exec();
     const completeSection = await this.sectionModel.find().exec();
+    console.log('sectiondata', completeSection)
     console.log('recover all data');
     // console.log('sections', completeSection)
-    const sectionDisplay = convertSection(completeSection)
+    const sectionDisplay = convertSection(completeSection);
     console.log('changeDisplay', sectionDisplay);
     // Find everything in DB and return it
     return {
