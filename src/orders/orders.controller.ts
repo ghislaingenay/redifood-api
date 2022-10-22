@@ -15,30 +15,31 @@ export class OrdersController {
     return await this.ordersService.recoverFoodAndSection();
   }
 
+  @Get(':id/edit')
+  async getOneOrder(@Param('id') orderId: string): Promise<{
+    allfoods: Food[];
+    allsection: Section[];
+    editOrder: Order;
+    totalPrice: number;
+  }> {
+    return await this.ordersService.getOneOrder(orderId);
+  }
   // Test id: AVGVHB5373DHUDFBHSCC
   @Get(':id')
-  async recoverOneOrder(@Param('id') orderId: string): Promise<{
-    foods: Food[];
-    section: Section[];
-    order: Order;
-  }> {
-    return await this.ordersService.recoverOneOrder(orderId);
+  recoverOneOrder(@Param('id') orderId: string): Order {
+    return this.ordersService.recoverOneOrder(orderId);
   }
 
-  @Get(':id/edit')
-  getOneOrder(@Param('id') orderId: string): void {
-    return this.ordersService.getOneOrder(orderId);
-  }
 
   @Post()
-  createOrder(
+  async createOrder(
     @Body('paid') orderPaid: boolean,
     @Body('total') orderTotal: number,
     @Body('table') orderTable: number,
     @Body('menu') orderMenu: Menu[],
     @Body('payment') orderPayment: string,
     @Body('date') orderDate: Date,
-  ): { test: Order } {
+  ): Promise<Order> {
     const dto = {
       paid: orderPaid,
       total: orderTotal,
@@ -47,7 +48,7 @@ export class OrdersController {
       payment: orderPayment,
       date: orderDate,
     };
-    return this.ordersService.createOrder(dto);
+    return await this.ordersService.createOrder(dto);
   }
 
   @Patch(':id/edit')

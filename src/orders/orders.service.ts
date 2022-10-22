@@ -8,7 +8,7 @@ import { Order, Food, SectionDB } from 'src/app.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { FOOD_MODEL, ORDER_MODEL, SECTION_MODEL } from 'constant';
 import { Model } from 'mongoose';
-import { convertSection } from 'functions';
+import { convertSection, findFoodsIdInOrders } from 'functions';
 
 @Injectable()
 export class OrdersService {
@@ -44,11 +44,16 @@ export class OrdersService {
     console.log('allfoods', allFoods);
     const completeSection = await this.sectionModel.find().exec();
     const sectionDisplay = convertSection(completeSection);
-    const oneOrder = await this.orderModel.findById(orderId);
+    const oneOrder: Order = await this.orderModel.findById(orderId);
+    const modifiedOrder: Order[] = findFoodsIdInOrders([oneOrder], allFoods);
+    const total = modifiedOrder[0].menu.map(e => e.food.price * e.qty).reduce((t,e) => t + e);
+    console.log("total", total)
+
     return {
-      foods: allFoods,
-      section: sectionDisplay,
-      orders: oneOrder,
+      allfoods: allFoods,
+      allsection: sectionDisplay,
+      editOrder: modifiedOrder[0],
+      totalPrice: total,
     };
   }
 
@@ -63,10 +68,13 @@ export class OrdersService {
   }
 
   //@ Post('orders/create')
-  createOrder(dto: Order) {
-    console.log(dto);
+  async createOrder(dto: Order) {
+    const newOrder = await this.orderModel.create(dto);
+    if (!newOrder) {
+      throw new NotFoundException('The new order was saved in the database');
+    }
     // Recover the data and add in DB, if error connection, throw error, otherwise return the orders with id and redirect in FE
-    return { test: dto };
+    return newOrder;
   }
 
   // @Patch('/orders/:id/edit')
