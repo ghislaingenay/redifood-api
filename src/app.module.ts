@@ -20,10 +20,7 @@ import { FoodSchema } from './schemas/foods.schema';
     FoodsModule,
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGODB_URL),
-    MongooseModule.forFeature([
-      { name: ORDER_MODEL, schema: OrderSchema },
-      { name: FOOD_MODEL, schema: FoodSchema },
-    ]),
+    MongooseModule.forFeature([{ name: ORDER_MODEL, schema: OrderSchema }]),
   ],
   controllers: [AppController],
   providers: [AppService],
