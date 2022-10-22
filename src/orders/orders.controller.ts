@@ -52,7 +52,7 @@ export class OrdersController {
   }
 
   @Patch(':id/edit')
-  updateOrder(
+  async updateOrder(
     @Param('id') orderId: string,
     @Body('paid') orderPaid: boolean,
     @Body('total') orderTotal: number,
@@ -60,7 +60,7 @@ export class OrdersController {
     @Body('menu') orderMenu: Menu[],
     @Body('payment') orderPayment: string,
     @Body('date') orderDate: Date,
-  ): void {
+  ): Promise<Order> {
     const dto = {
       paid: orderPaid,
       total: orderTotal,
@@ -69,6 +69,6 @@ export class OrdersController {
       payment: orderPayment,
       date: orderDate,
     };
-    return this.ordersService.updateOrder(dto, orderId);
+    return await this.ordersService.updateOrder(dto, orderId);
   }
 }

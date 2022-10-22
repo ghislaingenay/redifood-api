@@ -79,8 +79,10 @@ export class OrdersService {
   }
 
   // @Patch('/orders/:id/edit')
-  updateOrder(dto, orderId) {
-    console.log('show id', orderId);
-    console.log('show dto', dto);
+  async updateOrder(dto, orderId) {
+    const updateOrder = this.orderModel.findByIdAndUpdate(orderId, dto);
+    return updateOrder
+    // console.log('show id', orderId);
+    // console.log('show dto', dto);
   }
 }
