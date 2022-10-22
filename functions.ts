@@ -1,3 +1,4 @@
+import { Order } from "src/app.interface";
 
 export const convertSection = (array: any) => {
   const sectionDisplay = [];
@@ -19,4 +20,17 @@ export const convertSection = (array: any) => {
     }
   }
   return sectionDisplay;
+};
+
+export const findFoodsIdInOrders = (arrayOrders, arrayFoods): Order[] => {
+  let orderedList = [];
+  for (let i = 0; i < arrayOrders.length; i++) {
+    orderedList.push(arrayOrders[i]);
+    for (let j = 0; j < arrayOrders[i].menu.length; j++) {
+      let foundFood = arrayFoods.find((e) => e._id.valueOf() === arrayOrders[i].menu[j].food.valueOf());
+      console.log('foundFood', foundFood);
+      orderedList[i].menu[j].food = foundFood;
+    }
+  }
+  return orderedList;
 };

@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+import { Order } from './app.interface';
 import { AppService } from './app.service';
 
 @Controller()
@@ -6,7 +7,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getAllOrders() {
-    return this.appService.getAllOrders();
+  async getAllOrders(): Promise<Order[]> {
+    return await this.appService.getAllOrders();
   }
 }
