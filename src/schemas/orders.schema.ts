@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-const ObjectId = mongoose.Schema.Types.ObjectId;
 
 export const OrderSchema = new mongoose.Schema({
   table: {
@@ -14,9 +13,28 @@ export const OrderSchema = new mongoose.Schema({
   menu: [
     {
       food: {
-        type: ObjectId,
-        ref: 'foods',
-        required: true,
+        name: {
+          type: String,
+          required: true,
+        },
+        photo: {
+          type: String,
+          required: true,
+        },
+        price: {
+          type: Number,
+          required: true,
+        },
+        description: String,
+        // Could implement a DB for section and section back the id
+        section: {
+          type: String,
+          required: true,
+        },
+        extra: {
+          type: String,
+          required: true,
+        },
       },
       qty: {
         required: true,
