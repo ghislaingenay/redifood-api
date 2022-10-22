@@ -29,7 +29,7 @@ export class OrdersService {
     // console.log('sections', completeSection)
     const sectionDisplay = convertSection(completeSection);
     console.log('changeDisplay', sectionDisplay);
-    const allOrders = await this.orderModel.find().exec();
+    const allOrders = await this.orderModel.find({ paid: false }).exec();
     // Find everything in DB and return it
     return {
       foods: allFoods,
@@ -59,8 +59,9 @@ export class OrdersService {
   }
 
   // @Get("/orders/:id")
-  recoverOneOrder(orderId: string) {
+  async recoverOneOrder(orderId: string) {
     console.log('recover-id', orderId);
+
     const findOrder = ordersData.find((element) => element._id === orderId);
     if (!findOrder) {
       throw new NotFoundException('no order were found with this specific id');

@@ -10,7 +10,7 @@ export class AppService {
     @InjectModel(ORDER_MODEL) private readonly orderModel: Model<Order>,
   ) {}
   async getAllOrders() {
-    const allOrders = await this.orderModel.find().exec();
+    const allOrders = await this.orderModel.find({ paid: false }).exec();
     if (!allOrders) {
       throw new Error('orders were not found');
     }
