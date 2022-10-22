@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Order, Food } from './app.interface';
 import { Model } from 'mongoose';
-import { FOOD_MODEL, ORDER_MODEL } from 'constant';
+import { ORDER_MODEL } from 'constant';
 import { InjectModel } from '@nestjs/mongoose';
-import { findFoodsIdInOrders } from 'functions';
 
 
 @Injectable()

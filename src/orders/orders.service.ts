@@ -8,7 +8,7 @@ import { Order, Food, SectionDB } from 'src/app.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { FOOD_MODEL, ORDER_MODEL, SECTION_MODEL } from 'constant';
 import { Model } from 'mongoose';
-import { convertSection, findFoodsIdInOrders } from 'functions';
+import { convertSection } from 'functions';
 
 @Injectable()
 export class OrdersService {
@@ -45,14 +45,15 @@ export class OrdersService {
     const completeSection = await this.sectionModel.find().exec();
     const sectionDisplay = convertSection(completeSection);
     const oneOrder: Order = await this.orderModel.findById(orderId);
-    const modifiedOrder: Order[] = findFoodsIdInOrders([oneOrder], allFoods);
-    const total = modifiedOrder[0].menu.map(e => e.food.price * e.qty).reduce((t,e) => t + e);
-    console.log("total", total)
+    const total = oneOrder.menu
+      .map((e) => e.food.price * e.qty)
+      .reduce((t, e) => t + e);
+    console.log('total', total);
 
     return {
       allfoods: allFoods,
       allsection: sectionDisplay,
-      editOrder: modifiedOrder[0],
+      editOrder: oneOrder,
       totalPrice: total,
     };
   }
