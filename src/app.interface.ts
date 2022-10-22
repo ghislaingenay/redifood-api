@@ -22,7 +22,7 @@ export interface Order {
   paid: boolean;
   total: number;
   menu: Menu[];
-  date?: Date;
+  date?: Date | string;
   payment: string;
 }
 
