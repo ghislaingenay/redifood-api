@@ -7,9 +7,9 @@ import { ProfileModule } from './profile/profile.module';
 import { FoodsModule } from './foods/foods.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { ORDER_MODEL, FOOD_MODEL } from 'constant';
+import { ORDER_MODEL } from 'constant';
 import { OrderSchema } from './schemas/orders.schema';
-import { FoodSchema } from './schemas/foods.schema';
+import { PaymentModule } from './payment/payment.module';
 
 
 @Module({
@@ -21,6 +21,7 @@ import { FoodSchema } from './schemas/foods.schema';
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGODB_URL),
     MongooseModule.forFeature([{ name: ORDER_MODEL, schema: OrderSchema }]),
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
