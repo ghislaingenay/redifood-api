@@ -1,14 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import {
-  foods as foundFoods,
-  ordersData,
-  section as allSection,
-} from '../data';
 import { Order, Food, SectionDB } from 'src/app.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { FOOD_MODEL, ORDER_MODEL, SECTION_MODEL } from 'constant';
 import { Model } from 'mongoose';
 import { convertSection } from 'functions';
+import * as moment from 'moment';
 
 @Injectable()
 export class OrdersService {
@@ -60,9 +56,8 @@ export class OrdersService {
 
   // @Get("/orders/:id")
   async recoverOneOrder(orderId: string) {
-    console.log('recover-id', orderId);
-
-    const findOrder = ordersData.find((element) => element._id === orderId);
+    console.log('recover-id yes', orderId);
+    const findOrder = await this.orderModel.findById(orderId);
     if (!findOrder) {
       throw new NotFoundException('no order were found with this specific id');
     }
@@ -82,7 +77,7 @@ export class OrdersService {
   // @Patch('/orders/:id/edit')
   async updateOrder(dto, orderId) {
     const updateOrder = this.orderModel.findByIdAndUpdate(orderId, dto);
-    return updateOrder
+    return updateOrder;
     // console.log('show id', orderId);
     // console.log('show dto', dto);
   }

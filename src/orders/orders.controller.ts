@@ -24,12 +24,11 @@ export class OrdersController {
   }> {
     return await this.ordersService.getOneOrder(orderId);
   }
-  // Test id: AVGVHB5373DHUDFBHSCC
-  @Get(':id')
-  recoverOneOrder(@Param('id') orderId: string): Order {
-    return this.ordersService.recoverOneOrder(orderId);
-  }
 
+  @Get(':id')
+  async recoverOneOrder(@Param('id') orderId: string): Promise<Order> {
+    return await this.ordersService.recoverOneOrder(orderId);
+  }
 
   @Post()
   async createOrder(
