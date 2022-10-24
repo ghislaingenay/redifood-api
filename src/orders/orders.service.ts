@@ -3,7 +3,6 @@ import { Order, Food, Section } from 'src/app.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { FOOD_MODEL, ORDER_MODEL, SECTION_MODEL } from 'constant';
 import { Model } from 'mongoose';
-import { convertSection } from 'functions';
 
 @Injectable()
 export class OrdersService {
