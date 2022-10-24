@@ -6,7 +6,7 @@ export const SectionSchema = new mongoose.Schema({
     required: true,
   },
   extra: {
-    type: String,
+    type: [String],
     required: true,
   },
 });
