@@ -19,9 +19,12 @@ export class FoodsController {
     return await this.foodsService.recoverFoodAndSection();
   }
 
-  @Delete('section')
-  deleteSection(@Body('deleteSection') removeSection: string): FoodAndSection {
-    return this.foodsService.deleteSection(removeSection);
+  @Delete('section/:id/:name')
+  async deleteSection(
+    @Param('id') sectionId: string,
+    @Param('name') removeSection: string,
+): Promise<string> {
+    return await this.foodsService.deleteSection(sectionId, removeSection);
   }
 
   // Delete one section from the FE and update DB of foods as well
@@ -88,5 +91,13 @@ export class FoodsController {
       extra: sectionExtra,
     };
     return await this.foodsService.createSection(dto);
+  }
+
+  @Post('extra')
+  async createExtra(
+    @Body('addedExtra') newExtra: string,
+    @Body('foundSection') targetedSection: Section,
+  ) : Promise<string> {
+    return await this.foodsService.createExtra(newExtra, targetedSection);
   }
 }

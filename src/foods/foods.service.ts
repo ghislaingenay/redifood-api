@@ -25,15 +25,19 @@ export class FoodsService {
     };
   }
 
-  // @Delete('delete/section')
-  deleteSection(removeSection: string) {
+  // @Delete('section/:id/:name')
+  async deleteSection(sectionId: string, removeSection: string) {
     // Recover the section and update foods DB and return boolean as well to confirm modifications
+    const removeSelectedSection = await this.sectionModel
+      .deleteOne({ _id: sectionId })
+      .exec();
+    const removeFoods = await this.foodModel.deleteMany({
+      section: removeSection,
+    });
     console.log('a section was removed');
-    console.log('deletesection', removeSection);
-    return {
-      foods: foundFoods,
-      section: allSection,
-    };
+    console.log('removedsection', removeSelectedSection);
+    console.log('removedFoods', removeFoods);
+    return 'done';
   }
 
   // @Delete('delete/extra')
@@ -76,5 +80,15 @@ export class FoodsService {
   async createSection(dto) {
     const addNewSection = await this.sectionModel.create(dto);
     return addNewSection;
+  }
+
+  async createExtra(newExtra: string, targetedSection: Section) {
+    const prevSection = { ...targetedSection };
+    prevSection.extra.push(newExtra);
+    const addExtraToDB = await this.sectionModel.findByIdAndUpdate(
+      targetedSection._id,
+      prevSection,
+    );
+    return 'done';
   }
 }
