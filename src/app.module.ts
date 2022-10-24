@@ -11,7 +11,6 @@ import { ORDER_MODEL } from 'constant';
 import { OrderSchema } from './schemas/orders.schema';
 import { PaymentModule } from './payment/payment.module';
 
-
 @Module({
   imports: [
     OrdersModule,

@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-const ObjectId = mongoose.Schema.Types.ObjectId;
 
 export const FoodSchema = new mongoose.Schema({
   name: {

@@ -71,4 +71,10 @@ export class FoodsService {
     console.log('create a food was done', newFood);
     return newFood;
   }
+
+  // @Post('section')
+  async createSection(dto) {
+    const addNewSection = await this.sectionModel.create(dto);
+    return addNewSection;
+  }
 }

@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { FoodsService } from './foods.service';
-import { Food, FoodAndSection } from 'src/app.interface';
+import { Food, FoodAndSection, Section } from 'src/app.interface';
 
 @Controller('foods')
 export class FoodsController {
@@ -76,5 +76,17 @@ export class FoodsController {
       extra: foodExtra,
     };
     return await this.foodsService.createFood(dto);
+  }
+
+  @Post('section')
+  async createSection(
+    @Body('name') sectionName: string,
+    @Body('extra') sectionExtra: string[] | [],
+  ): Promise<Section> {
+    const dto = {
+      name: sectionName,
+      extra: sectionExtra,
+    };
+    return await this.foodsService.createSection(dto);
   }
 }
