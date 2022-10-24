@@ -28,6 +28,7 @@ export interface Order {
 
 // Interface for the section
 export interface Section {
+  _id?: string;
   name: string;
   extra: string[];
 }
