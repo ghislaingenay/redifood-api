@@ -1,17 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Order, Food, SectionDB } from 'src/app.interface';
+import { Order, Food, Section } from 'src/app.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { FOOD_MODEL, ORDER_MODEL, SECTION_MODEL } from 'constant';
 import { Model } from 'mongoose';
 import { convertSection } from 'functions';
-import * as moment from 'moment';
 
 @Injectable()
 export class OrdersService {
   constructor(
     @InjectModel(ORDER_MODEL) private readonly orderModel: Model<Order>,
     @InjectModel(FOOD_MODEL) private readonly foodModel: Model<Food>,
-    @InjectModel(SECTION_MODEL) private readonly sectionModel: Model<SectionDB>,
+    @InjectModel(SECTION_MODEL) private readonly sectionModel: Model<Section>,
   ) {}
 
   // @Get("/orders/create")
@@ -23,13 +22,11 @@ export class OrdersService {
     console.log('sectiondata', completeSection);
     console.log('recover all data');
     // console.log('sections', completeSection)
-    const sectionDisplay = convertSection(completeSection);
-    console.log('changeDisplay', sectionDisplay);
     const allOrders = await this.orderModel.find({ paid: false }).exec();
     // Find everything in DB and return it
     return {
       foods: allFoods,
-      section: sectionDisplay,
+      section: completeSection,
       orders: allOrders,
     };
   }
@@ -39,7 +36,6 @@ export class OrdersService {
     const allFoods = await this.foodModel.find().exec();
     console.log('allfoods', allFoods);
     const completeSection = await this.sectionModel.find().exec();
-    const sectionDisplay = convertSection(completeSection);
     const oneOrder: Order = await this.orderModel.findById(orderId);
     const total = oneOrder.menu
       .map((e) => e.food.price * e.qty)
@@ -48,7 +44,7 @@ export class OrdersService {
 
     return {
       allfoods: allFoods,
-      allsection: sectionDisplay,
+      allsection: completeSection,
       editOrder: oneOrder,
       totalPrice: total,
     };

@@ -1,31 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { foods as foundFoods, section as allSection } from '../data';
-import { Food, SectionDB } from 'src/app.interface';
+import { Food, Section } from 'src/app.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { FOOD_MODEL, SECTION_MODEL } from 'constant';
 import { Model } from 'mongoose';
-import { convertSection } from 'functions';
 
 @Injectable()
 export class FoodsService {
   constructor(
     @InjectModel(FOOD_MODEL) private readonly foodModel: Model<Food>,
-    @InjectModel(SECTION_MODEL) private readonly sectionModel: Model<SectionDB>,
+    @InjectModel(SECTION_MODEL) private readonly sectionModel: Model<Section>,
   ) {}
   // Recover foods and section to render in the page
   // @Get('foods')
   async recoverFoodAndSection() {
     const allFoods = await this.foodModel.find().exec();
     const completeSection = await this.sectionModel.find().exec();
-    console.log('sectiondata', completeSection)
+    console.log('sectiondata', completeSection);
     console.log('recover all data');
-    // console.log('sections', completeSection)
-    const sectionDisplay = convertSection(completeSection);
-    console.log('changeDisplay', sectionDisplay);
-    // Find everything in DB and return it
+
     return {
       foods: allFoods,
-      section: sectionDisplay,
+      section: completeSection,
     };
   }
 
@@ -72,15 +68,6 @@ export class FoodsService {
   async createFood(dto: Food) {
     console.log('entered in the loop');
     const newFood = await this.foodModel.create(dto);
-    const checkSection = await this.sectionModel.find({ name: dto.section, extra: dto.extra }).exec();
-    console.log('checkSection', checkSection);
-    if (checkSection.length === 0) {
-      const createNewSection = await this.sectionModel.create({
-        name: dto.section,
-        extra: dto.extra,
-      });
-      console.log('section created', createNewSection);
-    }
     console.log('create a food was done', newFood);
     return newFood;
   }
