@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { User } from 'src/app.interface';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
 import { USER_MODEL } from 'constant';
 import { Model } from 'mongoose';
@@ -33,10 +33,10 @@ export class AuthService {
       dto.password = hash;
       const createUser = await this.userModel.create(dto);
       // Create a session or JWTreq.login(createUser, err => {
-      // delete createUser.password;
-      // return createUser;
+      delete createUser.password;
+      return createUser;
     } catch (err) {
-      throw new Error(err);
+      throw new Error('User already in DB');
     }
   }
 
