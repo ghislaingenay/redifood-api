@@ -5,7 +5,7 @@ import { User } from 'src/app.interface';
 export class AuthService {
   // @Get('/auth')
   getAuthentification() {
-    return { isAuthenticated: false };
+    
   }
 
   // @Post('auth/login')
