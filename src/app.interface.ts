@@ -42,7 +42,7 @@ export interface Request {
 
 // Interface that concern the user (Authentification)
 export interface User {
-  userId?: string;
+  _id?: string;
   name: string;
   username: string;
   password: string;
