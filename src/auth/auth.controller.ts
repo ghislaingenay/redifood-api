@@ -5,17 +5,17 @@ import { AuthService } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get()
+  @Get('login')
   getAuthentification(): void {
     this.authService.getAuthentification();
-  };
+  }
 
   @Post('signup')
   async signup(
     @Body('name') nameUser: string,
     @Body('username') userName: string,
     @Body('password') passwordUser: string,
-  ): Promise<boolean> {
+  ): Promise<any> {
     const dto = {
       name: nameUser,
       username: userName,
@@ -25,16 +25,16 @@ export class AuthController {
   }
 
   @Post('login')
-  login(
+  async login(
     @Body('name') nameUser: string,
     @Body('username') userName: string,
     @Body('password') passwordUser: string,
-  ): boolean {
+  ): Promise<any> {
     const dto = {
       name: nameUser,
       username: userName,
       password: passwordUser,
     };
-    return this.authService.login(dto);
+    return await this.authService.login(dto);
   }
 }
