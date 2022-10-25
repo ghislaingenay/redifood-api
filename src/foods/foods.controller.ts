@@ -37,9 +37,9 @@ export class FoodsController {
   }
 
   //Delete a food with a specific id
-  @Delete(':id/delete')
-  deleteFood(@Param('id') foodId: string) {
-    return this.foodsService.deleteFood(foodId);
+  @Delete(':id')
+  async deleteFood(@Param('id') foodId: string): Promise<string> {
+    return await this.foodsService.deleteFood(foodId);
   }
 
   @Patch()

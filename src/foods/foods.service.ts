@@ -63,13 +63,10 @@ export class FoodsService {
   }
 
   // @Delete(':id/delete')
-  deleteFood(foodId: string) {
+  async deleteFood(foodId: string) {
     // Find DB of food findByIdAndDelete and update the state
-    console.log('delete food id', foodId);
-    return {
-      foods: foundFoods,
-      section: allSection,
-    };
+    await this.foodModel.findByIdAndDelete(foodId);
+    return 'done';
   }
 
   // @Patch('')
