@@ -40,15 +40,26 @@ export class FoodsService {
     return 'done';
   }
 
-  // @Delete('delete/extra')
-  deleteExtra(removeExtra: string) {
-    // Recover the extra and update foods DB and return boolean as well to confirm modifications
-    console.log('an extra was removed');
-    console.log('deleteextra', removeExtra.toLowerCase());
-    return {
-      foods: foundFoods,
-      section: allSection,
+  // @Delete('section/:id/extra/:extra')
+  async deleteExtra(sectionId: string, removeExtra: string) {
+    const foundSection = await this.sectionModel.findById(sectionId).exec();
+    console.log('bef', foundSection.extra);
+    const modifiedExtra = foundSection.extra.filter(
+      (oneextra) => oneextra !== removeExtra,
+    );
+    console.log('modif', modifiedExtra);
+    const data = {
+      name: foundSection.name,
+      extra: modifiedExtra,
     };
+    const deleteFoods = await this.foodModel
+      .deleteMany({ extra: removeExtra })
+      .exec();
+    const updatedSection = await this.sectionModel.findByIdAndUpdate(
+      sectionId,
+      data,
+    );
+    return 'done';
   }
 
   // @Delete(':id/delete')
@@ -85,9 +96,13 @@ export class FoodsService {
   async createExtra(newExtra: string, targetedSection: Section) {
     const prevSection = { ...targetedSection };
     prevSection.extra.push(newExtra);
+    console.log('prev', prevSection);
     const addExtraToDB = await this.sectionModel.findByIdAndUpdate(
       targetedSection._id,
-      prevSection,
+      {
+        name: prevSection.name,
+        extra: prevSection.extra,
+      },
     );
     return 'done';
   }

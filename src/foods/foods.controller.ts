@@ -28,9 +28,12 @@ export class FoodsController {
   }
 
   // Delete one section from the FE and update DB of foods as well
-  @Delete('extra')
-  deleteExtra(@Body('deleteExtra') removeExtra: string): FoodAndSection {
-    return this.foodsService.deleteExtra(removeExtra);
+  @Delete('section/:id/extra/:extra')
+  async deleteExtra(
+    @Param('id') sectionId: string,
+    @Param('extra') removeExtra: string,
+  ): Promise<string> {
+    return await this.foodsService.deleteExtra(sectionId, removeExtra);
   }
 
   //Delete a food with a specific id
