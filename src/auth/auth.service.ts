@@ -20,34 +20,46 @@ export class AuthService {
 
   // @Post('auth/signup')
   async signup(dto: User) {
-    
+    try {
+      const user = await this.userModel
+        .findOne({
+          username: dto.username,
+        })
+        .exec();
+      if (user) {
+        throw new Error('The user is already registered');
+      }
+      const hash = bcrypt.hashSync(dto.password, salt);
+      dto.password = hash;
+      const createUser = await this.userModel.create(dto);
+      // Create a session or JWTreq.login(createUser, err => {
+      // delete createUser.password;
+      // return createUser;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 
-    // @Post('auth/login')
-  login(dto: User) {
+  // @Post('auth/login')
+  async login(dto: User) {
     try {
-      const user = await this.userModel.findOne( {username: dto.username })
+      const user = await this.userModel
+        .findOne({ username: dto.username })
+        .exec();
       if (user) {
         await bcrypt.compare(dto.password, user.password, (err, result) => {
           if (result) {
             // JWT connection
             // render the selected page and send credentials to web app
-            delete user.password // Avoid to recover this information in the FE
-            return user
+            delete user.password; // Avoid to recover this information in the FE
+            return user;
           }
         })
       } else {
         throw new ForbiddenException('credentials incorrect')
       }
     } catch (err) {
-      throw new Error(err)
+      throw new Error(err);
     }
-    }
-
-    // if username already allocated => throw new  try catch err   if (error) {} check error code mongoose duplicate filed => throw new Forbidden Execrptio  ('credentials) else 
-    // find the user by email
-    // if user does not exist, throw excetpt
-    return false;
   }
-
 }
