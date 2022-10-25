@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { User } from 'src/app.interface';
 import bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
@@ -18,21 +18,24 @@ export class AuthService {
     console.log('hello')
   }
 
-    // @Post('auth/login')
-  login(dto: User) {
+  // @Post('auth/signup')
+  async signup(dto: User) {
     try {
-      const user = 
+      const user = await this.userModel.findOne( {username: dto.username })
+      if (user) {
+        await bcrypt.compare(dto.password, user.password, (err, result) => {
+          if (result) {
+            // JWT connection
+            // render the selected page and send credentials to web app
+          }
+        })
+      } else {
+        throw new ForbiddenException('credentials incorrect')
+      }
+    } catch (err) {
+      throw new Error(err)
     }
 
-    // if username already allocated => throw new  try catch err   if (error) {} check error code mongoose duplicate filed => throw new Forbidden Execrptio  ('credentials) else 
-    // find the user by email
-    // if user does not exist, throw excetpt
-    return false;
-  }
-
-  // @Post('auth/signup')
-  signup(dto: User) {
-    console.log(dto);
     // find the user by email
     // if user does not exist throw exception
     // Compare password
@@ -43,4 +46,19 @@ export class AuthService {
     // delete user.hash
     return false;
   }
+
+    // @Post('auth/login')
+  login(dto: User) {
+    try {
+      const user = 
+    } catch (err) {
+
+    }
+
+    // if username already allocated => throw new  try catch err   if (error) {} check error code mongoose duplicate filed => throw new Forbidden Execrptio  ('credentials) else 
+    // find the user by email
+    // if user does not exist, throw excetpt
+    return false;
+  }
+
 }

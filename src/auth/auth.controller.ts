@@ -11,17 +11,17 @@ export class AuthController {
   };
 
   @Post('signup')
-  signup(
+  async signup(
     @Body('name') nameUser: string,
     @Body('username') userName: string,
     @Body('password') passwordUser: string,
-  ): boolean {
+  ): Promise<boolean> {
     const dto = {
       name: nameUser,
       username: userName,
       password: passwordUser,
     };
-    return this.authService.signup(dto);
+    return await this.authService.signup(dto);
   }
 
   @Post('login')
