@@ -73,10 +73,10 @@ export class FoodsService {
   }
 
   // @Patch('')
-  updateFood(dto: Food) {
+  async updateFood(dto: Food) {
     console.log('patch was done');
-    console.log(dto);
-    return dto;
+    const updateFood = await this.foodModel.findByIdAndUpdate(dto._id, dto);
+    return updateFood;
   }
 
   // @Post('create')

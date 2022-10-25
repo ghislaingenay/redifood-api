@@ -43,7 +43,7 @@ export class FoodsController {
   }
 
   @Patch()
-  updateFood(
+  async updateFood(
     @Body('_id') foodId: string,
     @Body('name') foodName: string,
     @Body('photo') foodPhoto: string,
@@ -51,7 +51,7 @@ export class FoodsController {
     @Body('price') foodPrice: number,
     @Body('section') foodSection: string,
     @Body('extra') foodExtra: string,
-  ): Food {
+  ): Promise<Food> {
     const dto = {
       _id: foodId,
       name: foodName,
@@ -61,7 +61,7 @@ export class FoodsController {
       section: foodSection,
       extra: foodExtra,
     };
-    return this.foodsService.updateFood(dto);
+    return await this.foodsService.updateFood(dto);
   }
 
   @Post('create')
