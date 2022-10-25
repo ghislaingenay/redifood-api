@@ -13,6 +13,17 @@ export class AuthService {
   constructor(
     @InjectModel(USER_MODEL) private readonly userModel:Model<User>,
   ) {}
+
+  async validateUser(username: string, password: string): Promise<any> {
+    const user = await this.userModel.findOne({ username: username });
+    if (user) {
+      await bcrypt.compare(user.password, password, (err, result) => {
+        if (result) {
+          return user;
+        }
+      });
+    }
+  }
   // @Get('/auth')
   getAuthentification() {
     console.log('hello')
