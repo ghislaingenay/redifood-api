@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ORDER_MODEL } from 'constant';
 import { OrderSchema } from './schemas/orders.schema';
 import { PaymentModule } from './payment/payment.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { PaymentModule } from './payment/payment.module';
     MongooseModule.forRoot(process.env.MONGODB_URL),
     MongooseModule.forFeature([{ name: ORDER_MODEL, schema: OrderSchema }]),
     PaymentModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
