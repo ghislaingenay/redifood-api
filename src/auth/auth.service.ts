@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotAcceptableException } from '@nestjs/common';
 import { User } from 'src/app.interface';
 import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
@@ -11,7 +11,7 @@ const salt = bcrypt.genSaltSync(10);
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(USER_MODEL) private readonly userModel:Model<User>,
+    @InjectModel(USER_MODEL) private readonly userModel: Model<User>,
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
@@ -22,11 +22,14 @@ export class AuthService {
           return user;
         }
       });
+    } else {
+      throw new NotAcceptableException('could not find the user');
     }
+    return null;
   }
   // @Get('/auth')
   getAuthentification() {
-    console.log('hello')
+    console.log('hello');
   }
 
   // @Post('auth/signup')
@@ -44,7 +47,7 @@ export class AuthService {
       dto.password = hash;
       const createUser = await this.userModel.create(dto);
       // Create a session or JWTreq.login(createUser, err => {
-      delete createUser.password;
+      // delete createUser.password;
       return createUser;
     } catch (err) {
       throw new Error('User already in DB');
