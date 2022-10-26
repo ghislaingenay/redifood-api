@@ -1,31 +1,31 @@
 import { ForbiddenException, Injectable, NotAcceptableException } from '@nestjs/common';
-import { User } from 'src/app.interface';
 import * as bcrypt from 'bcrypt';
-import { InjectModel } from '@nestjs/mongoose';
-import { USER_MODEL } from 'constant';
-import { Model } from 'mongoose';
+import { UsersService } from 'src/users/users.service';
 
-// Implement the number of salt for hash password generation
-const salt = bcrypt.genSaltSync(10);
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(USER_MODEL) private readonly userModel: Model<User>,
+    private readonly usersService: UsersService
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.userModel.findOne({ username: username });
-    if (user) {
-      await bcrypt.compare(user.password, password, (err, result) => {
-        if (result) {
-          return user;
-        }
-      });
-    } else {
-      throw new NotAcceptableException('could not find the user');
+    const user = await this.usersService.getUser(username);
+    const passwordValid = await bcrypt.compare(password, user.password)
+
+    if (!user) {
+        throw new NotAcceptableException('could not find the user');
+      }
+
+    if (user && passwordValid) {
+      return {
+        userId: user.id,
+        userName: user.username
+      };
     }
+
     return null;
+  }
   }
   // @Get('/auth')
   getAuthentification() {
