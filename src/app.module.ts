@@ -11,6 +11,7 @@ import { ORDER_MODEL } from 'constant';
 import { OrderSchema } from './schemas/orders.schema';
 import { PaymentModule } from './payment/payment.module';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AuthModule } from './auth/auth.module';
     MongooseModule.forFeature([{ name: ORDER_MODEL, schema: OrderSchema }]),
     PaymentModule,
     AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
