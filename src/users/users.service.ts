@@ -21,4 +21,11 @@ export class UsersService {
     });
     return newUser;
   }
+
+  //log in user using the findOne method
+  async getUser(userName: string) {
+    const username = userName.toLowerCase();
+    const user = await this.userModel.findOne({ username: username });
+    return user;
+  }
 }
