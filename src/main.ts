@@ -4,10 +4,14 @@ import { ValidationPipe } from '@nestjs/common';
 import * as session from 'express-session';
 import * as passport from 'passport';
 import * as connectMongoDBSession from 'connect-mongodb-session';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors({
+    credentials: true,
+    origin: [process.env.FRONT_END],
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -33,6 +37,13 @@ async function bootstrap() {
     }),
   );
 
+  app.use(cookieParser());
+
+  app.use(
+    passport.initialize({
+      userProperty: 'user',
+    }),
+  );
   app.use(passport.initialize());
   app.use(passport.session());
 
