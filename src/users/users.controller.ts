@@ -5,6 +5,7 @@ import {
   Body,
   UseGuards,
   Request,
+  Response,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
@@ -40,6 +41,7 @@ export class UsersController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   login(@Request() req): any {
+    console.log(req.body);
     return { User: req.user, msg: 'User logged in' };
   }
 
@@ -52,8 +54,9 @@ export class UsersController {
 
   //Get / logout
   @Get('/logout')
-  logout(@Request() req): any {
+  logout(@Request() req, @Response() res): any {
     req.session.destroy();
+    res.clearCookie('connect.sid');
     return { msg: 'The user session has ended' };
   }
 }

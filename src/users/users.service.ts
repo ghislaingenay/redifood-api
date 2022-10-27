@@ -11,13 +11,13 @@ export class UsersService {
   ) {}
 
   //Signup user method with username and password
-  async insertUser(userName: string, password: string, fullName: string) {
+  async insertUser(userName: string, passWord: string, fullName: string) {
     const username = userName.toLowerCase();
     const fullname = fullName.toLowerCase();
     const newUser = await this.userModel.create({
       name: fullname,
       username: username,
-      password: password,
+      password: passWord,
     });
     return newUser;
   }
