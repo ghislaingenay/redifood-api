@@ -3,14 +3,7 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as session from 'express-session';
 import * as passport from 'passport';
-import { default as connectMongoDBSession } from 'connect-mongodb-session';
-
-const MongoDBStore = connectMongoDBSession(session);
-
-const sessionStore = new MongoDBStore({
-  uri: process.env.MONGODB_URL,
-  collection: 'sessions',
-});
+import * as connectMongoDBSession from 'connect-mongodb-session';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -20,6 +13,12 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+  const MongoDBStore = connectMongoDBSession(session);
+
+  const sessionStore = new MongoDBStore({
+    uri: process.env.MONGODB_URL,
+    collection: 'sessions',
+  });
   app.use(
     session({
       secret: `${process.env.SESSION_SECRET}`,
@@ -36,7 +35,6 @@ async function bootstrap() {
 
   app.use(passport.initialize());
   app.use(passport.session());
-
 
   await app.listen(3003);
 }
