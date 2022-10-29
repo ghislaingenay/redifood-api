@@ -57,6 +57,6 @@ export class UsersController {
   logout(@Request() req, @Response() res): any {
     req.session.destroy();
     res.clearCookie('connect.sid');
-    return { msg: 'The user session has ended' };
+    res.json({ msg: 'The user session has ended' });
   }
 }
