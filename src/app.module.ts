@@ -24,7 +24,7 @@ import { UsersModule } from './users/users.module';
     MongooseModule.forFeature([{ name: ORDER_MODEL, schema: OrderSchema }]),
     PaymentModule,
     AuthModule,
-    UsersModule,
+    // UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

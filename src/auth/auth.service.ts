@@ -4,6 +4,7 @@ import {
   NotAcceptableException,
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { Request, Response } from 'express';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
@@ -26,5 +27,63 @@ export class AuthService {
     }
 
     return null;
+  }
+  // @Post('signup')
+  async signup(req) {
+    try {
+      const foundUser = await this.usersService.getUser(req.body.username);
+      if (foundUser) {
+        throw new NotAcceptableException('user already found in the database');
+      }
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(req.body.password, salt);
+      req.body.password = hash;
+      const { username, password, fullname } = req.body;
+      const user = await this.usersService.insertUser(
+        username,
+        password,
+        fullname,
+      );
+      req.login(user, (err) => {
+        if (err) {
+          throw err;
+        } else {
+          return user;
+        }
+      });
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  // @Post('login')
+  async login(req: Request) {
+    const foundUser = await this.usersService.getUser(req.body.username);
+    if (!foundUser) {
+      throw new NotAcceptableException('could not find the user');
+    }
+    if (foundUser) {
+      try {
+        await bcrypt.compare(
+          req.body.password,
+          foundUser.password,
+          (err, result) => {
+            if (result === false) {
+              return { error: true };
+            } else {
+              req.login(foundUser, (err) => {
+                if (err) {
+                  throw err;
+                } else {
+                  return foundUser;
+                }
+              });
+            }
+          },
+        );
+      } catch (err) {
+        throw new Error('Credentials incorrect');
+      }
+    }
   }
 }
