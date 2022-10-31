@@ -48,8 +48,9 @@ export class UsersController {
   //Get / protected
   @UseGuards(AuthenticatedGuard)
   @Get('protected')
-  getHello(@Request() req): string {
-    return req.user;
+  getHello(@Request() req, @Response() res): any {
+    console.log(req.user);
+    res.json(req.user);
   }
 
   //Get / logout
