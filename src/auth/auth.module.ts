@@ -16,7 +16,7 @@ import { UsersModule } from 'src/users/users.module';
     AuthService,
     // ,
     // LocalStrategy,
-    // SessionSerializer,
+    SessionSerializer,
   ],
 })
 export class AuthModule {}
