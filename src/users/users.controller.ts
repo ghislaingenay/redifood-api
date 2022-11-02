@@ -40,7 +40,7 @@ export class UsersController {
   //Post / Login
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  login(@Request() req): any {
+  async login(@Request() req): Promise<any> {
     console.log(req.body);
     return { User: req.user, msg: 'User logged in' };
   }
@@ -48,14 +48,14 @@ export class UsersController {
   //Get / protected
   @UseGuards(AuthenticatedGuard)
   @Get('protected')
-  getHello(@Request() req, @Response() res): any {
+  async getHello(@Request() req, @Response() res): Promise<any> {
     console.log(req.user);
     res.json(req.user);
   }
 
   //Get / logout
   @Get('/logout')
-  logout(@Request() req, @Response() res): any {
+  async logout(@Request() req, @Response() res): Promise<any> {
     req.session.destroy();
     res.clearCookie('connect.sid');
     res.json({ msg: 'The user session has ended' });
