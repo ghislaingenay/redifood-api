@@ -11,6 +11,7 @@ async function bootstrap() {
   app.enableCors({
     credentials: true,
     origin: [process.env.FRONT_END],
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
   });
   app.useGlobalPipes(
     new ValidationPipe({
@@ -44,7 +45,6 @@ async function bootstrap() {
       userProperty: 'user',
     }),
   );
-  app.use(passport.initialize());
   app.use(passport.session());
 
   await app.listen(3003);
