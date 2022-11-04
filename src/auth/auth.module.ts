@@ -5,9 +5,10 @@ import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './local.strategy';
 import { SessionSerializer } from './session.serializer';
 import { UsersModule } from 'src/users/users.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [UsersModule, PassportModule.register({ session: true })],
+  imports: [UsersModule, JwtModule.register({})],
   // controllers: [AuthController],
   providers: [AuthService, LocalStrategy, SessionSerializer],
 })
