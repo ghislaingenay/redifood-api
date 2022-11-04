@@ -48,7 +48,7 @@ export class AuthService {
         password,
         fullname,
       );
-      // If successful, create token
+      return this.signToken(user._id, user.password);
     } catch (err) {
       throw new Error(err);
     }
@@ -69,7 +69,7 @@ export class AuthService {
             if (result === false) {
               return { error: true };
             } else {
-              // If successful, create token
+              return this.signToken(user._id, user.password);
             }
           },
         );
@@ -77,5 +77,15 @@ export class AuthService {
         throw new Error('Credentials incorrect');
       }
     }
+  }
+  async signToken(userId: string, password: string): Promise<string> {
+    const payload = {
+      sub: userId,
+      password,
+    };
+    return this.jwt.signAsync(payload, {
+      expiresIn: '15m',
+      secret: process.env.JWT_SECRET,
+    });
   }
 }
