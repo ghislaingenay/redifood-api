@@ -3,13 +3,17 @@ import {
   Injectable,
   NotAcceptableException,
 } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private jwt: JwtService,
+  ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
     const user = await this.usersService.getUser(username);
@@ -44,13 +48,7 @@ export class AuthService {
         password,
         fullname,
       );
-      req.login(user, (err) => {
-        if (err) {
-          throw err;
-        } else {
-          return user;
-        }
-      });
+      // If successful, create token
     } catch (err) {
       throw new Error(err);
     }
@@ -71,13 +69,7 @@ export class AuthService {
             if (result === false) {
               return { error: true };
             } else {
-              req.login(foundUser, (err) => {
-                if (err) {
-                  throw err;
-                } else {
-                  return foundUser;
-                }
-              });
+              // If successful, create token
             }
           },
         );
