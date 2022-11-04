@@ -48,7 +48,7 @@ export class AuthService {
         password,
         fullname,
       );
-      return this.signToken(user._id, user.password);
+      return this.signToken(user._id, user.username);
     } catch (err) {
       throw new Error(err);
     }
@@ -69,7 +69,7 @@ export class AuthService {
             if (result === false) {
               return { error: true };
             } else {
-              return this.signToken(user._id, user.password);
+              return this.signToken(foundUser._id, foundUser.username);
             }
           },
         );
@@ -78,14 +78,20 @@ export class AuthService {
       }
     }
   }
-  async signToken(userId: string, password: string): Promise<string> {
+  async signToken(
+    userId: string,
+    username: string,
+  ): Promise<{ access_token: string }> {
     const payload = {
       sub: userId,
-      password,
+      username,
     };
-    return this.jwt.signAsync(payload, {
+    const token = await this.jwt.signAsync(payload, {
       expiresIn: '15m',
       secret: process.env.JWT_SECRET,
     });
+    return {
+      access_token: token,
+    };
   }
 }
