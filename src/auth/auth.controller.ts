@@ -6,28 +6,10 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('login')
-  accessLogin(@Request() req, @Response() res) {
-    // console.log('clikde');
-    console.log('req', req.user);
-    if (req.isAuthenticated()) {
-      console.log('yes');
-      res.json(req.user);
-    } else {
-      console.log('yuu');
-      res.sendStatus(403);
-    }
-  }
+  accessLogin(@Request() req, @Response() res) {}
 
   @Get('signup')
-  accessSignUp(@Request() req, @Response() res) {
-    if (req.isAuthenticated()) {
-      console.log('yes', req.user);
-      res.json(req.user);
-    } else {
-      console.log('yuu');
-      res.json({ isLoggedIn: false });
-    }
-  }
+  accessSignUp(@Request() req, @Response() res) {}
 
   @Get('logout')
   logoutAccess(@Request() req, @Response() res) {
