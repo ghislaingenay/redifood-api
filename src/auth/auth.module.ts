@@ -8,7 +8,7 @@ import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [UsersModule, PassportModule.register({ session: true })],
-  // controllers: [AuthController],
+  controllers: [AuthController],
   providers: [AuthService, LocalStrategy, SessionSerializer],
 })
 export class AuthModule {}
