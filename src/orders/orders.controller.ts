@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Patch } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Patch,
+  Request as Req,
+} from '@nestjs/common';
 import { Food, Section, Order, Menu } from 'src/app.interface';
 import { OrdersService } from './orders.service';
 
@@ -32,7 +40,8 @@ export class OrdersController {
 
   @Post()
   async createOrder(
-    @Body('paid') orderPaid: boolean,
+    @Body('paid')
+    orderPaid: boolean,
     @Body('total') orderTotal: number,
     @Body('table') orderTable: number,
     @Body('menu') orderMenu: Menu[],

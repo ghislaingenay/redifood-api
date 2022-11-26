@@ -40,7 +40,7 @@ export interface Request {
   dateto: string;
 }
 
-// Interface that concern the user (Authentification)
+// Interface that concern the user (Authentication)
 export interface User {
   _id?: string;
   name: string;
