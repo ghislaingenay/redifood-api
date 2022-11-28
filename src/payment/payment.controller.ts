@@ -1,6 +1,7 @@
-import { Controller, Body, Get, Param, Patch } from '@nestjs/common';
+import { Controller, Body, Get, Param, Patch, Post } from '@nestjs/common';
 import { Order, Menu } from 'src/app.interface';
 import { PaymentService } from './payment.service';
+import axios from 'axios';
 
 @Controller('payment')
 export class PaymentController {
@@ -23,14 +24,14 @@ export class PaymentController {
     @Body('date') orderDate: Date,
   ): Promise<Order> {
     const dto = {
+      id: orderId,
       paid: orderPaid,
       total: orderTotal,
       table: orderTable,
       menu: orderMenu,
       payment: orderPayment,
-      date: orderDate,
+      date: new Date(),
     };
-    return await this.paymentService.setPaidOrder(orderId, dto)
+    return await this.paymentService.setPaidOrder(orderId, dto);
   }
-
 }
